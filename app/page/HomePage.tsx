@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 
-export default function Home() {
+export default function HomePage() {
   const [array, setArray] = useState<number[]>([])
 
   useEffect(() => {
