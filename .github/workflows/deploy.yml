@@ -5,7 +5,6 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# 권한 설정 추가 (중요: GITHUB_TOKEN에 쓰기 권한이 있어야 배포 가능)
 permissions:
   contents: write
 
@@ -16,30 +15,33 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # 공지사항에 따른 Node 24 강제 옵션 적용
     env:
-      # Node 24 강제 사용 환경 변수 (경고 제거용)
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 24 # 런타임을 24로 고정
 
-      - name: Enable pnpm via Corepack
-        run: |
-          corepack enable
-          corepack prepare pnpm@latest --activate
+      - name: Install pnpm
+        # corepack 대신 최신 pnpm 액션을 사용하는 것이 에러가 적습니다.
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build
         run: pnpm run build
 
       - name: Deploy
-        # v3보다는 최신 v4 사용을 권장합니다.
+        # peaceiris 액션도 최신 버전을 유지하세요.
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
