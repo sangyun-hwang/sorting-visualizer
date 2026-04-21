@@ -1,39 +1,39 @@
-name: Deploy Next.js to GitHub Pages
+# name: Deploy Next.js to GitHub Pages
 
-on:
-  push:
-    branches: [main]
-  workflow_dispatch:
+# on:
+#   push:
+#     branches: [main]
+#   workflow_dispatch:
 
-concurrency:
-  group: "gh-pages"
-  cancel-in-progress: true
+# concurrency:
+#   group: "gh-pages"
+#   cancel-in-progress: true
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
+#     steps:
+#       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
+#       - uses: actions/setup-node@v4
+#         with:
+#           node-version: 20
 
-      - name: Enable pnpm via Corepack
-        run: |
-          corepack enable
-          corepack prepare pnpm@9.0.0 --activate
+#       - name: Enable pnpm via Corepack
+#         run: |
+#           corepack enable
+#           corepack prepare pnpm@9.0.0 --activate
 
-      - name: Install dependencies
-        run: pnpm install
+#       - name: Install dependencies
+#         run: pnpm install
 
-      - name: Build
-        run: pnpm run build
+#       - name: Build
+#         run: pnpm run build
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./out
+#       - name: Deploy
+#         uses: peaceiris/actions-gh-pages@v3
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           publish_branch: gh-pages
+#           publish_dir: ./out
