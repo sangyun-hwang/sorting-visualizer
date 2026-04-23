@@ -1,9 +1,15 @@
 "use client"
 
+import { bubbleSort } from "@/core/algorithms/bubbleSort"
+import { createRunner } from "@/core/runner/createRunner"
+import { Step } from "@/core/types"
 import { useEffect, useState } from "react"
 
 export default function HomePage() {
   const [array, setArray] = useState<number[]>([])
+  const [step, setStep] = useState<Step | null>(null)
+  const generator = bubbleSort(array)
+  const runner = createRunner(generator)
 
   useEffect(() => {
     generateArray()
