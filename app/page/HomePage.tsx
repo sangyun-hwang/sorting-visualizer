@@ -8,11 +8,22 @@ import { useEffect, useState } from "react"
 export default function HomePage() {
   const [array, setArray] = useState<number[]>([])
   const [step, setStep] = useState<Step | null>(null)
+  const [speed, setSpeed] = useState(100)
   const generator = bubbleSort(array)
   const runner = createRunner(generator)
 
   useEffect(() => {
     generateArray()
+
+    const id = setInterval(() => {
+      const result = runner.next()
+
+      if (!result || result.done) return
+
+      setStep(result.value)
+    }, speed)
+
+    return () => clearInterval(id)
   }, [])
 
   const generateArray = () => {
@@ -37,6 +48,18 @@ export default function HomePage() {
             key={idx}
             className="bg-gray-400 w-3"
             style={{ height: `${value * 2}px` }}
+          />
+        ))}
+      </div>
+      <div className="flex items-end gap-1 h-64">
+        {step?.array.map((value, idx) => (
+          <div
+            key={idx}
+            style={{
+              height: value * 3,
+              backgroundColor:
+                step.indices.includes(idx) ? 'red' : 'gray',
+            }}
           />
         ))}
       </div>
