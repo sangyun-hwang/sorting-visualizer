@@ -13,10 +13,11 @@ export default function HomePage() {
   const runner = createRunner(generator)
 
   useEffect(() => {
-    generateArray()
+    const newArr = generateArray()
 
     const id = setInterval(() => {
       const result = runner.next()
+      console.log(step)
 
       if (!result || result.done) return
 
@@ -31,6 +32,8 @@ export default function HomePage() {
       Math.floor(Math.random() * 100)
     )
     setArray(newArr)
+
+    return newArr
   }
 
   return (
@@ -56,7 +59,7 @@ export default function HomePage() {
           <div
             key={idx}
             style={{
-              height: value * 3,
+              height: `${value * 2}px`,
               backgroundColor:
                 step.indices.includes(idx) ? 'red' : 'gray',
             }}
